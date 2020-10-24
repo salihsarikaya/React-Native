@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, FlatList } from 'react-native';
+import { Text, View, ScrollView, FlatList, Modal, Button, StyleSheet, PanResponder } from 'react-native';
 import { Card, Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
-import { postFavorite } from '../redux/ActionCreators';
+import { postFavorite, postComment } from '../redux/ActionCreators';
 
 const mapStateToProps = state => {
     return {
@@ -23,22 +23,32 @@ function RenderCampsite(props) {
 
     if (campsite) {
         return (
-            <Card
-                featuredTitle={campsite.name}
-                image={{uri: baseUrl + campsite.image}}>
-                <Text style={{margin: 10}}>
-                    {campsite.description}
-                </Text>
-                <Icon
-                    name={props.favorite ? 'heart' : 'heart-o'}
-                    type='font-awesome'
-                    color='#f50'
-                    raised
-                    reverse
-                    onPress={() => props.favorite ? 
-                        console.log('Already set as a favorite') : props.markFavorite()}
-                />
-            </Card>
+                <Card
+                    featuredTitle={campsite.name}
+                    image={{uri: baseUrl + campsite.image}}>
+                    <Text style={{margin: 10}}>
+                        {campsite.description}
+                    </Text>
+                    <View style={{flexDirection:"row", alignContent:"center"}}>
+                        <Icon
+                            name={props.favorite ? 'heart' : 'heart-o'}
+                            type='font-awesome'
+                            color='#f50'
+                            raised
+                            reverse
+                            onPress={() => props.favorite ? 
+                                console.log('Already set as a favorite') : props.markFavorite()}
+                        />
+                        <Icon
+                            name={'pencil'}
+                            type='font-awesome'
+                            color='#5637DD'
+                            raised
+                            reverse
+                            onPress={() => props.onShowModal()}
+                        />
+                    </View>
+                </Card>
         );
     }
     return <View />;
